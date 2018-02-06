@@ -63,8 +63,7 @@
                     host: host,
                     path: uri.substring(uri.indexOf("/",8),uri.length), // first '/' after 'http://'
                     port: '80',
-                    method: method,
-                    headers: {'Authorization': authHeader}
+                    method: method
                 };
                 var req = http.request(options,function(res){
                 	var result = '';
@@ -74,9 +73,9 @@
                     });
                     res.on('end', function() {
                     	if([200,201,202].indexOf(res.statusCode)>=0)
-                            success(wrapper?wrapper(data):data);
+                            success(wrapper?wrapper(result):result);
                         else   
-                            error(data);
+                            error(result);
                     });
                 });                
                 req.on('error', error).end();
@@ -279,7 +278,9 @@
             textSearch: function(query, options, success, error){                
                 options = options || {};
                 options.query = query ? query : " ";
-                search(options,uris.textSearch,success,error,SoundCollection);
+                search(options,uris.textSearch,success,error,function(jsonStr) {
+                    return SoundCollection(JSON.parse(jsonStr))
+                });
             },                    
             contentSearch: function(options, success, error){
                 if(!(options.target || options.analysis_file))
