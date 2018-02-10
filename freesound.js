@@ -59,12 +59,14 @@
             
             if (typeof module !== 'undefined'){ // node.js
                 var http = require("http");
+                var unencodedURI = uri.substring(uri.indexOf("/",8),uri.length);
                 var options = {
                     host: host,
-                    path: uri.substring(uri.indexOf("/",8),uri.length), // first '/' after 'http://'
+                    path: encodeURI(unencodedURI), // first '/' after 'http://'
                     port: '80',
                     method: method
                 };
+                console.log(options.path);
                 var req = http.request(options,function(res){
                 	var result = '';
                     res.setEncoding('utf8');            
