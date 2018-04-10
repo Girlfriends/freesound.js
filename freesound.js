@@ -66,7 +66,6 @@
                     port: '80',
                     method: method
                 };
-                console.log(options.path);
                 var req = http.request(options,function(res){
                 	var result = '';
                     res.setEncoding('utf8');            
